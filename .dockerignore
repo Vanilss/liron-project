@@ -1,0 +1,17 @@
+.git
+.gitignore
+.gitattributes
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.venv
+venv/
+*.egg-info
+.DS_Store
+.idea
+.vscode
+*.log
+.streamlit
