@@ -105,7 +105,7 @@ elif page == "📊 S&P 500 - מרכז הניתוח":
 
         manual_content = {
             "שאלת תת חקר 1": {
-                "findings": "",
+                "findings": "סקטורי הפיננסים והטכנולוגיה מובילים את השוק עם צמיחה של כ-12%, בעוד שחומרי הגלם מציגים נסיגה. מרבית הסקטורים במדד מציגים צמיחה חיובית מתונה של בערך 4%-8%, מה שמעיד על מגמת התרחבות כלכלית כללית בשוק. הנתונים מדגישים כי סוג התעשייה הוא הגורם המכריע המשפיע על פוטנציאל הגדלת ההכנסות של החברה.",
                 "conclusions": "סוג הסקטור הוא הגורם המשפיע ביותר על הצמיחה, כשהטכנולוגיה והפיננסים מובילים."
             },
             "שאלת תת חקר 2": {
@@ -126,9 +126,12 @@ elif page == "📊 S&P 500 - מרכז הניתוח":
         all_tab_names = list(st.session_state.all_sheets.keys()) + ["מסקנות"]
         tabs = st.tabs(all_tab_names)
 
+        # ניקוי רווחים מיותרים משמות הגיליונות למניעת אי-התאמות
+        clean_manual_content = {k.strip(): v for k, v in manual_content.items()}
+
         for index, (sheet_name, df) in enumerate(st.session_state.all_sheets.items()):
             with tabs[index]:
-                txt = manual_content.get(sheet_name,
+                txt = clean_manual_content.get(sheet_name.strip(),
                                          {"findings": "ממצאים טרם הוזנו", "conclusions": "מסקנות טרם הוזנו"})
 
                 if index == 0:
