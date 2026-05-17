@@ -3,10 +3,8 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# הגדרות דף
 st.set_page_config(page_title="S&P 500 Elite Analytics", layout="wide", initial_sidebar_state="expanded")
 
-# עיצוב CSS מתקדם - נשאר בדיוק כפי ששלחת
 st.markdown("""
     <style>
     .stApp {
@@ -55,11 +53,9 @@ st.markdown("""
 if "all_sheets" not in st.session_state:
     st.session_state.all_sheets = {}
 
-# סרגל צד
 st.sidebar.markdown("# 🔧 סרגל כלים")
 page = st.sidebar.radio("ניווט:", ["🏠 דף הבית", "📊 S&P 500 - מרכז הניתוח", "⚙️ ניהול נתונים"])
 
-# דף הבית
 if page == "🏠 דף הבית":
     st.markdown("<h1 style='text-align: center; font-size: 4.5rem;'>S&P 500 INSIGHTS</h1>", unsafe_allow_html=True)
     st.markdown(
@@ -80,7 +76,6 @@ if page == "🏠 דף הבית":
     st.image("https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=1200",
              use_container_width=True)
 
-# דף ניהול נתונים
 elif page == "⚙️ ניהול נתונים":
     st.title("📂 טעינת מסד נתונים")
     uploaded_file = st.file_uploader("העלה קובץ אקסל (XLSX)", type=["xlsx"])
@@ -101,18 +96,13 @@ elif page == "⚙️ ניהול נתונים":
         except Exception as e:
             st.error(f"שגיאה בטעינה: {str(e)}")
 
-# דף מרכז הניתוח
 elif page == "📊 S&P 500 - מרכז הניתוח":
     if not st.session_state.all_sheets:
         st.warning("אין נתונים. יש להעלות קובץ בניהול נתונים.")
     else:
         st.markdown("## 📈 ניתוח אוטומטי לפי תתי-שאלות")
 
-        # --- כאן אתה ממלא את הטקסט ידנית לכל גיליון ---
-        # פשוט תעתיק את שם הגיליון מהאקסל ותכתוב מה שבא לך
-        # --- כאן אתה ממלא את הטקסט ידנית לכל גיליון ---
-        # --- הזנת הממצאים והמסקנות כפי שביקשת בדיוק ---
-        # --- הזנת הממצאים והמסקנות (מעודכן עם התאמה גמישה) ---
+
         manual_content = {
             "שאלת תת חקר 1": {
                 "findings": "סקטורי הפיננסים והטכנולוגיה מובילים את השוק עם צמיחה של כ-12%, בעוד שחומרי הגלם מציגים נסיגה. מרבית הסקטורים במדד מציגים צמיחה חיובית מתונה של בערך 4%-8%, מה שמעיד על מגמת התרחבות כלכלית כללית בשוק. הנתונים מדגישים כי סוג התעשייה הוא הגורם המכריע המשפיע על פוטנציאל הגדלת ההכנסות של החברה.",
@@ -168,41 +158,32 @@ elif page == "📊 S&P 500 - מרכז הניתוח":
                 # --- שאר הגיליונות - עם ה-Findings מעל ה-Conclusions ---
                 else:
                     st.markdown(f"### 📄 נושא: {sheet_name}")
-                    col_chart, col_side = st.columns([1.5, 1])
 
-                    with col_chart:
-                        st.markdown("#### 📊 גרף ניתוח (מתוך אקסל)")
+                    st.markdown("#### 📊 גרף ניתוח (מתוך אקסל)")
 
-                        image_index = index - 1
-                        if image_index < len(chart_files):
-                            img_path = chart_files[image_index]
-                            if os.path.exists(img_path):
-                                st.image(img_path, use_container_width=True, caption=f"גרף עבור {sheet_name}")
-                            else:
-                                st.error(f"הקובץ {img_path} לא נמצא.")
+                    image_index = index - 1
+                    if image_index < len(chart_files):
+                        img_path = chart_files[image_index]
+                        if os.path.exists(img_path):
+                            st.image(img_path, use_container_width=True, caption=f"גרף עבור {sheet_name}")
                         else:
-                            st.info("לא הוגדרה תמונה.")
+                            st.error(f"הקובץ {img_path} לא נמצא.")
+                    else:
+                        st.info("לא הוגדרה תמונה.")
 
-                    with col_side:
-                        # חלק ממצאים - חדש
-                        st.markdown("#### 🔍 ממצאים")
-                        st.markdown(
-                            f'<div class="conclusion-box"><ul><li>{txt["findings"]}</li></ul></div>',
-                            unsafe_allow_html=True)
+                    st.markdown("#### 🔍 ממצאים")
+                    st.markdown(
+                        f'<div class="conclusion-box"><ul><li>{txt["findings"]}</li></ul></div>',
+                        unsafe_allow_html=True)
 
-                        # רווח להורדת המסקנות למטה
-                        st.markdown("<br>", unsafe_allow_html=True)
-
-                        # חלק מסקנות - נשאר כפי שהיה וירד למטה
-                        st.markdown("#### 💡 מסקנות")
-                        st.markdown(
-                            f'<div class="conclusion-box"><ul><li>{txt["conclusions"]}</li></ul></div>',
-                            unsafe_allow_html=True)
+                    st.markdown("#### 💡 מסקנות")
+                    st.markdown(
+                        f'<div class="conclusion-box"><ul><li>{txt["conclusions"]}</li></ul></div>',
+                        unsafe_allow_html=True)
 
                 st.markdown("#### 📋 טבלת נתונים מלאה")
                 st.dataframe(df, use_container_width=True)
 
-        # תוכן לגיליון המסקנות הסופי (הטאב האחרון ברשימה)
         with tabs[-1]:
             st.markdown("## 🎯 סיכום ומסקנות סופיות של המחקר")
             st.markdown('<div class="conclusion-box">', unsafe_allow_html=True)
